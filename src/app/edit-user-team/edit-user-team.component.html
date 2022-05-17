@@ -1,0 +1,125 @@
+<mat-toolbar>
+  <mat-icon>star</mat-icon>&nbsp;
+  <span>Fantsay Points</span>
+  <span class="fill"></span>
+</mat-toolbar>
+<ng-container>
+  <form (ngSubmit)="editTeamDataSubmit(teamchange.value)" #teamchange>
+  <mat-tab-group>
+    <mat-tab label="Wicket-Keepers">
+      <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Total Points</th>
+              <th>User Selected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of wkdata">
+              <td>{{d.name}}</td>
+              <td>{{d.total_points}}</td>
+              <td *ngIf="d.user_selected">
+                <input type="checkbox" value="d.id" ngModel checked name="wick_name"/>
+              </td>
+              <td *ngIf="!d.user_selected">
+                <input type="checkbox" name="wick_name"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Batsmen">
+      <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Total Points</th>
+              <th>User Selected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of batdata">
+              <td>{{d.name}}</td>
+              <td>{{d.total_points}}</td>
+              <td *ngIf="d.user_selected">
+                <input type="checkbox" checked ngModel name="bat_name"/>
+              </td>
+              <td *ngIf="!d.user_selected">
+                <input type="checkbox" ngModel name="bat_name"/>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </mat-tab>
+
+    <mat-tab label="All-Rounders">
+      <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Total Points</th>
+              <th>User Selected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of ardata">
+              <td>{{d.name}}</td>
+              <td>{{d.total_points}}</td>
+              <td *ngIf="d.user_selected">
+                <input type="checkbox" checked ngModel name="ar_name"/>
+              </td>
+              <td *ngIf="!d.user_selected">
+                <input type="checkbox" ngModel name="ar_name"/>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Bowlers">
+      <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Total Points</th>
+              <th>User Selected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of bowldata">
+              <td>{{d.name}}</td>
+              <td>{{d.total_points}}</td>
+              <td *ngIf="d.user_selected">
+                <input type="checkbox" ngModel checked name="bowl_name"/>
+              </td>
+              <td *ngIf="!d.user_selected">
+                <input type="checkbox" ngModel name="bowl_name"/>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </mat-tab>
+    </mat-tab-group>
+    <!-- <button mat-raised-button color="primary">
+      change
+    </button> -->
+  </form>
+</ng-container>
+

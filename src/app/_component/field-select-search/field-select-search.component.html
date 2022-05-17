@@ -1,0 +1,14 @@
+<mat-select [errorStateMatcher]="errorStateMatcher" [formControl]="formControl" [formlyAttributes]="field"
+            [multiple]="to.multiple">
+  <mat-option>
+    <ngx-mat-select-search [(ngModel)]="search" [noEntriesFoundLabel]="'Not found'"
+                           [placeholderLabel]="'Search...'"></ngx-mat-select-search>
+  </mat-option>
+  <mat-option *ngFor="let f of to.options|filterBy:filterProp:search" [value]="f[valueProp]">
+    <div *ngIf="!viewEmail && !viewId">{{f[labelProp]}}</div>
+    <div *ngIf="viewEmail || viewId">
+      <div>{{f[labelProp]}} - {{f.id}}</div>
+      <small class="text-muted">{{f.email}}</small>
+    </div>
+  </mat-option>
+</mat-select>

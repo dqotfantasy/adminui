@@ -1,0 +1,77 @@
+<mat-toolbar>
+  <mat-icon>people</mat-icon>&nbsp;
+  <span>Users</span>
+  <span class="fill"></span>
+  <input (delayedInput)="setParams()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+    type="search">
+    <button (click)="exportData()" [disabled]="data.length===0" mat-icon-button matTooltip="Export Data">
+      <mat-icon>file_download</mat-icon>
+    </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>Phone</th>
+        <th class="number">User Name</th>
+        <th class="center">Document Verified?</th>
+        <th class="center">User Details</th>
+        <th class="center">Send Notification</th>
+        <!--      <th class="left">Action</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data;let index=index" class="pointer">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td [routerLink]="'profile/'+d.id">
+          <div>
+            {{d.name}}
+            <mat-icon *ngIf="d.is_locked" class="custom" color="warn" matTooltip="Locked">lock</mat-icon>
+          </div>
+          <small>
+            {{d.email}}
+            <mat-icon *ngIf="d.email_verified" [matTooltip]="d.email_verified?'Verified':'Not Verified'"
+              class="custom customVerifiedIcon" color="primary">verified
+            </mat-icon>
+          </small>
+        </td>
+        <td [routerLink]="'profile/'+d.id">
+          {{d.phone}}
+          <mat-icon *ngIf="d.phone_verified" [matTooltip]="d.phone_verified?'Verified':'Not Verified'"
+            class="custom customVerifiedIcon" color="primary">verified
+          </mat-icon>
+        </td>
+        <td class="number" [routerLink]="'profile/'+d.id">{{d.username}}</td>
+        <td class="center">
+          <mat-icon [color]="d.document_verified?'primary':'warn'"
+            [matTooltip]="d.document_verified?'Verified':'Not Verified'">
+            {{d.document_verified ? 'verified' : 'error'}}
+          </mat-icon>
+        </td>
+        <td class="center" [routerLink]="'profile/'+d.id">
+
+          System User<mat-icon [matTooltip]="d.is_sys_user?'System User':'System User'" [color]="d.is_sys_user?'primary':'warn'">{{d.is_sys_user?'verified':'error'}}</mat-icon><br>
+          <div *ngIf="d.promoter_type==0">Promoter type <b>Normal</b></div>
+          <div *ngIf="d.promoter_type==1">Promoter type <b>Master</b></div>
+          <div *ngIf="d.promoter_type==2">Promoter type <b>Promoter</b></div>
+
+        </td>
+        <td class="center">
+          <button (click)="add(d.id)" mat-icon-button matTooltip="Add">
+            <i class="material-icons">add_alert</i>
+            <!-- <mat-icon>add</mat-icon> -->
+        </button>
+        </td>
+        <!--      <td class="left">-->
+        <!--        <button (click)="edit(d)" mat-icon-button matTooltip="Edit">-->
+        <!--          <mat-icon>create</mat-icon>-->
+        <!--        </button>-->
+        <!--      </td>-->
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;setParams()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

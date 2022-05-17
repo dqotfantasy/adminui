@@ -1,0 +1,132 @@
+<mat-toolbar>
+  <button (click)="backBtn()" mat-icon-button matTooltip="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<ng-container *ngIf="data">
+  <div class="bg-white padding">
+    <div class="row text-center align-items-center">
+      <div class="col">
+        <img [src]="data.teama_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.teama}}</h2>
+      </div>
+      <div class="col-auto">
+        <mat-chip-list>
+          <mat-chip [selectable]="false" [selected]="true">{{data.status}}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="col">
+        <img [src]="data.teamb_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.teamb}}</h2>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="container-fluid">
+    <div class="mat-elevation-z1">
+      <div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th class="number">Prize</th>
+              <th class="number">Total Teams</th>
+              <th class="center">Confirmed</th>
+              <th class="number">Max Team</th>
+              <th class="number">Entry Fee</th>
+              <th class="left">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of contests">
+              <td class="number">{{d.prize}}</td>
+              <td class="number">{{d.joined.length}}/{{d.total_teams}}</td>
+              <td class="center">
+                <mat-chip-list>
+                  <mat-chip [selectable]="false" [selected]="d.is_confirmed">
+                    {{d.is_confirmed ? 'Yes' : 'No'}}
+                  </mat-chip>
+                </mat-chip-list>
+              </td>
+              <td class="number">{{d.max_team}}</td>
+              <td class="number">{{d.entry_fee}}</td>
+              <td class="left">
+                <button (click)="showPrizeBreakup($event,d)" mat-icon-button matTooltip="Prize breakup">
+                  <mat-icon>emoji_events</mat-icon>
+                </button>
+                <button (click)="showTeams($event,d.joined)" mat-icon-button matTooltip="Joined Teams">
+                  <mat-icon>groups</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <br>
+  </div>
+  <br>
+</ng-container>
+
+<ng-template #prizeBreakupTemplate>
+  <mat-toolbar>
+    <span>Prize Breakup</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="number">Percentage</th>
+            <th class="number">Prize</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of prizeBreakups">
+            <td>
+              Rank {{d.from}}
+              <ng-container *ngIf="d.from!==d.to">
+                - {{d.to}}
+              </ng-container>
+            </td>
+            <td class="number">{{d.percentage}}%</td>
+            <td class="number">{{d.prize}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>
+<ng-template #contestTeams>
+  <mat-toolbar>
+    <span>Top Team in Contest</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Team Name</th>
+            <th>Rank</th>
+            <th class="number">Prize</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of userTeamsData">
+            <td>{{d.user_teams.name}}</td>
+            <td>{{d.rank}}</td>
+            <td class="number">{{d.prize}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>

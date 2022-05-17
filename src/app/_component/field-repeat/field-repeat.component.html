@@ -1,0 +1,19 @@
+<div *ngFor="let f of field.fieldGroup; let i = index;" class="row">
+  <formly-field [field]="f" class="col"></formly-field>
+  <div *ngIf="field.fieldGroup.length>1" class="col-auto">
+    <button (click)="remove(i)" class="remove" color="warn" mat-icon-button matTooltip="Remove" type="button">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="add">
+  <button (click)="add()" *ngIf="!to?.showIconButton" [disabled]="!form.valid" color="accent" mat-raised-button
+          type="button">
+    {{ to.addText }}
+  </button>
+
+  <button (click)="add()" *ngIf="to?.showIconButton" [disabled]="!form.valid" [matTooltip]="to?.addText" color="accent"
+          mat-mini-fab type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

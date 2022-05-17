@@ -1,0 +1,50 @@
+<mat-toolbar>
+    <mat-icon>emoji_events</mat-icon>&nbsp;
+    <span>Winner</span>
+    <span class="fill"></span>
+    <!-- <button (click)="add()" mat-icon-button matTooltip="Add">
+        <mat-icon>add</mat-icon>
+    </button> -->
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th class="number">No of contests</th>
+                <th class="number">No of teams</th>
+                <th>Starting At</th>
+                <th class="center">Status</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of data;let index=index">
+                <td>{{(index + 1) + page * perPage}}</td>
+                <td>
+                    <a [routerLink]="'fixture-detail/'+d.id">
+                        {{d.name}}
+                        <mat-icon *ngIf="!d.format_str" class="custom" color="warn" matTooltip="Format is missing">error
+                        </mat-icon>
+                    </a>
+                </td>
+                <td class="number">{{d.contests_count}}</td>
+                <td class="number">{{d.user_teams_count}}</td>
+                <td>
+                    <span>{{d.starting_at|date:'dd MMM hh:mm a'}}</span>
+                </td>
+                <td class="center">
+                    <mat-chip-list>
+                        <mat-chip [selectable]="false" [selected]="true">
+                            {{d.status}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+        [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

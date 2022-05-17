@@ -1,0 +1,30 @@
+<mat-toolbar>
+  <mat-icon>pages</mat-icon>&nbsp;
+  <span>Pages</span>
+  <span class="fill"></span>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th class="left">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+
+        <td>{{d.title}}</td>
+
+        <td class="left">
+          <button (click)="edit(d)" mat-icon-button matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

@@ -1,0 +1,71 @@
+<mat-toolbar>
+  <mat-icon>view_agenda</mat-icon>&nbsp;
+  <span>Competitions</span>
+  <span class="fill"></span>
+  <input [(ngModel)]="search" class="search-input" appDelayInput (delayedInput)="setParams()" placeholder="Search..."
+    type="search">&nbsp;
+  <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Session</th>
+        <th>Category</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Match Format</th>
+        <th>Status</th>
+        <th>Prize Breakup</th>
+        <th>Is Leaderboard</th>
+        <th>Active</th>
+        <th>View leaderboard</th>
+        <!--      <th>Is Active?</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let competition of data;let index=index">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td>{{competition.title}}</td>
+        <td>{{competition.season}}</td>
+        <td>{{competition.category|uppercase}}</td>
+        <td>{{competition.datestart}}</td>
+        <td>{{competition.dateend}}</td>
+        <td>{{competition.match_format|uppercase}}</td>
+        <td>{{competition.status|uppercase}}</td>
+        <td>
+          <button (click)="edit(competition)" mat-icon-button matTooltip="Prize Breakup">
+            <mat-icon>add</mat-icon>
+          </button>
+        </td>
+        <td class="center">
+          <mat-slide-toggle (change)="update(competition)" [(ngModel)]="competition.is_leaderboard" [ngModelOptions]="{standalone:true}">
+          </mat-slide-toggle>
+        </td>
+        <td class="center">
+          <mat-slide-toggle (change)="update(competition)" [(ngModel)]="competition.is_active" [ngModelOptions]="{standalone:true}">
+          </mat-slide-toggle>
+        </td>
+        <td>
+          <a [routerLink]="'/leaderboard/'+competition.id" *ngIf="competition.is_leaderboard">
+            <button mat-icon-button matTooltip="Leaderboard">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </a>
+        </td>
+        <!--      <td class="center">-->
+        <!--        <mat-slide-toggle (change)="update(competition)" [(ngModel)]="competition.is_active"-->
+        <!--                          [ngModelOptions]="{standalone:true}">-->
+        <!--        </mat-slide-toggle>-->
+        <!--      </td>-->
+      </tr>
+    </tbody>
+  </table>
+
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

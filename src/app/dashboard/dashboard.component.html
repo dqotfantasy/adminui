@@ -1,0 +1,121 @@
+<mat-toolbar>
+  <mat-icon>dashboard</mat-icon>&nbsp;
+  <span>Dashboard</span>
+</mat-toolbar>
+<br>
+<div *ngIf="data" class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/users/'">
+        <div class="mat-elevation-z2 card bg-primary white">
+          <mat-icon>people</mat-icon>
+          <h1>{{data.total_users}}</h1>
+          <h4>Total Users</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/payments'" [queryParams]="{ status : 'SUCCESS' , type: 'DEPOSIT' ,date:'NOW' }">
+        <div class="mat-elevation-z2 card bg-green">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <h1>{{data.today_deposit}}</h1>
+          <h4>Today Total Deposit</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/payments'" [queryParams]="{ status : 'SUCCESS' , type: 'DEPOSIT' ,date:'MONTH' }">
+        <div class="mat-elevation-z2 card bg-white black">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <h1>{{data.month_deposit}}</h1>
+          <h4>Current Month Total Deposit</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/payments'" [queryParams]="{ status : '' , type: 'WITHDRAW' ,date:'MONTH' }">
+        <div class="mat-elevation-z2 card bg-red">
+          <mat-icon>redeem</mat-icon>
+          <h1>{{data.month_withdraw}}</h1>
+          <h4>Current Month Total Withdrawal</h4>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/contests/'">
+        <div class="mat-elevation-z2 card bg-red">
+          <mat-icon>playlist_add_check</mat-icon>
+          <h1>{{data.total_contests}}</h1>
+          <h4>Created Contests</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/contests'" [queryParams]="{ status: 'LIVE'}">
+        <div class="mat-elevation-z2 card bg-white black">
+          <mat-icon>playlist_play</mat-icon>
+          <h1>{{data.active_contests}}</h1>
+          <h4>Active Contests</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/contests'" [queryParams]="{ status: 'IN ACTIVE'}">
+        <div class="mat-elevation-z2 card bg-green">
+          <mat-icon>cancel</mat-icon>
+          <h1>{{data.inactive_contests}}</h1>
+          <h4>Inactive Contests</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/contests'" [queryParams]="{ status: 'Today Join'}">
+        <div class="mat-elevation-z2 card bg-primary white">
+          <mat-icon>playlist_add_check_circle</mat-icon>
+          <h1>{{data.today_joined_contests}}</h1>
+          <h4>Today Joined Contests</h4>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/users'" [queryParams]="{ find: 'VERIFIED'}">
+        <div class="mat-elevation-z2 card bg-primary white">
+          <mat-icon>verified_user</mat-icon>
+          <h1>{{data.verified_users}}</h1>
+          <h4>Verified Users</h4>
+        </div>
+        </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/users'" [queryParams]="{ find: 'UNVERIFIED'}">
+        <div class="mat-elevation-z2 card bg-green">
+          <mat-icon>gpp_bad</mat-icon>
+          <h1>{{data.unverified_users}}</h1>
+          <h4>Unverified Users</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/users'" [queryParams]="{ find: 'newUsers'}">
+        <div class="mat-elevation-z2 card bg-white black">
+          <mat-icon>person_add</mat-icon>
+          <h1>{{data.new_users}}</h1>
+          <h4>New Users</h4>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-md-3">
+      <a [routerLink]="'/withdrawals'" [queryParams]="{ status: 'PENDING'}">
+        <div class="mat-elevation-z2 card bg-red">
+          <mat-icon>account_balance</mat-icon>
+          <h1>{{data.withdrawal_requests}}</h1>
+          <h4>Withdrawal Requests</h4>
+        </div>
+        </a>
+    </div>
+  </div>
+</div>

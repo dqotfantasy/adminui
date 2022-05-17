@@ -1,0 +1,171 @@
+<mat-toolbar>
+  <mat-icon>playlist_add_check</mat-icon>&nbsp;
+  <span>Contests</span>
+  <span class="fill"></span>
+  <button (click)="add()" [disabled]="categories.length===0 || statuses.length === 0" mat-icon-button
+    matTooltip="Add Contest" *ngIf="userId==''">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button (click)="addFromPool()" [disabled]="contestTemplates.length===0" mat-icon-button
+    matTooltip="Add from Prize Contest Template" *ngIf="userId==''">
+    <mat-icon>import_contacts</mat-icon>
+  </button>
+  <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Category</th>
+        <th *ngIf="!fixtureId">Fixture</th>
+        <th class="number">Total Teams</th>
+        <th class="center">Confirmed</th>
+        <th class="center">Type</th>
+        <th class="number">Max Team</th>
+        <th class="number">Entry Fee</th>
+        <th class="number">Prize</th>
+        <th class="center">Status</th>
+        <th class="left" *ngIf="userId==''">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data;let index=index">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td>
+          <a [routerLink]="'contest-detail/'+d.id" *ngIf="d.category">{{d.category}}</a>
+          <a href="javascript:void(0);" *ngIf="!d.category">Private Contest</a>
+        </td>
+        <td *ngIf="!fixtureId">{{d.fixture}}</td>
+        <td class="number">{{d.joined}}/{{d.total_teams}}</td>
+
+        <td class="center">
+          <mat-chip-list>
+            <mat-chip [selectable]="false" [selected]="d.is_confirmed">
+              {{d.is_confirmed ? 'Yes' : 'No'}}
+            </mat-chip>
+          </mat-chip-list>
+        </td>
+        <td class="center">
+          <mat-chip-list>
+            <mat-chip [selectable]="false" [selected]="d.type">
+              {{d.type}}
+            </mat-chip>
+          </mat-chip-list>
+        </td>
+        <td class="number">{{d.max_team}}</td>
+        <td class="number">{{d.entry_fee}}</td>
+        <td class="number">{{d.prize}}</td>
+        <td class="center">
+          <mat-chip-list>
+            <mat-chip [selectable]="false" [selected]="false">
+              {{d.status}}
+            </mat-chip>
+          </mat-chip-list>
+        </td>
+        <td class="left">
+          <button (click)="showPrizeBreakup($event,d)" mat-icon-button matTooltip="Prize breakup" *ngIf="userId==''">
+            <mat-icon>emoji_events</mat-icon>
+          </button>
+          <button (click)="add(d)" mat-icon-button matTooltip="Copy" *ngIf="userId==''">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <!-- <button *ngIf="d.fixture_status == 'NOT STARTED' &&  d.joined == 0 && userId==''" (click)="edit(d)"
+            [disabled]="d.original_id" mat-icon-button matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button> -->
+          <button (click)="edit(d)"
+            [disabled]="d.original_id" mat-icon-button matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button>
+          <button *ngIf="d.status == 'LIVE' && userId==''" (click)="remove(d)" mat-icon-button matTooltip="Contest Cancel">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;fixtureId?init():setParams()" [length]="total"
+    [pageIndex]="page" [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>
+
+<ng-template #poolsTemplate>
+  <mat-toolbar>
+    <span>Select Contest Template</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="number">Entry Fee</th>
+            <th class="number">Total Teams</th>
+            <th class="number">Max Team</th>
+            <th class="number">Prize</th>
+            <th class="left">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of contestTemplates" [mat-dialog-close]="d" class="pointer">
+            <td>
+              {{d.name}}
+            </td>
+            <td class="number">{{d.entry_fee}}</td>
+            <td class="number">{{d.total_teams}}</td>
+            <td class="number">{{d.max_team}}</td>
+            <td class="number">{{d.prize}}</td>
+            <td class="left">
+
+              <button (click)="showPrizeBreakup($event,d)" mat-icon-button matTooltip="Prize breakup">
+                <mat-icon>emoji_events</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>
+
+<ng-template #prizeBreakupTemplate>
+  <mat-toolbar>
+    <span>Prize Breakup</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="number">Percentage</th>
+            <th class="number">Prize</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of prizeBreakups">
+            <td>
+              Rank {{d.from}}
+              <ng-container *ngIf="d.from!==d.to">
+                - {{d.to}}
+              </ng-container>
+            </td>
+            <td class="number">{{d.percentage}}%</td>
+            <td class="number">{{d.prize}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>

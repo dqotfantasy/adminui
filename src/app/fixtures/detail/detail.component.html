@@ -1,0 +1,119 @@
+<mat-toolbar>
+  <button (click)="backBtn()" mat-icon-button matTooltip="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<ng-container *ngIf="data">
+  <div class="bg-white padding">
+    <div class="row text-center align-items-center">
+      <div class="col">
+        <img [src]="data.teama_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.teama_short_name}}</h2>
+      </div>
+      <div class="col-auto">
+        <mat-chip-list>
+          <mat-chip [selectable]="false" [selected]="true">{{data.status}}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="col">
+        <img [src]="data.teamb_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.teamb_short_name}}</h2>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col text-center">
+        {{data.status_note}}
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="container-fluid">
+    <div class="mat-elevation-z1">
+      <app-contests [fixtureId]="id" [userId]="userId"></app-contests>
+    </div>
+    <br>
+    <div class="mat-elevation-z1">
+      <app-private-contests [fixtureId]="id"></app-private-contests>
+    </div>
+    <br>
+    <div *ngIf="data?.squads.length>0 && userId==''" class="mat-elevation-z1">
+      <mat-toolbar>
+        Squad
+        <span class="fill"></span>
+        <input [(ngModel)]="search" class="search-input" placeholder="Search..." type="search">
+      </mat-toolbar>
+      <div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+          <tr>
+            <th></th>
+            <th>Player</th>
+            <th class="number">Credit</th>
+            <th>Position</th>
+            <th>Team</th>
+            <th class="number">Points</th>
+            <th class="left">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let s of data.squads|filterBy:['player.name','position']:search|orderBy:['-playing11']">
+            <!--            <td>{{s?.player_id}}</td>-->
+            <td class="center" style="width: 40px">
+              <img [src]="s.player.image_path" alt="" style="width: 40px">
+            </td>
+            <td>
+              <div>{{s?.player.name}}</div>
+              <small *ngIf="!data.lineup_announced && s.last_played" class="text-success">Last played</small>
+              <small *ngIf="data.lineup_announced && s.playing11" class="text-success">In playing 11</small>
+              <small *ngIf="data.lineup_announced && !s.playing11" class="text-danger">Not playing</small>
+            </td>
+            <td class="number">{{s.fantasy_player_rating}}</td>
+            <td>{{s.role}}</td>
+            <td>{{getTeam(s.team_id)}}</td>
+            <td class="number">{{s.total_points}}</td>
+            <td class="left">
+              <button (click)="showPlayerStat($event,s)" mat-icon-button matTooltip="Show Stat">
+                <mat-icon>info</mat-icon>
+              </button>
+              <button (click)="editPlayer(s)" mat-icon-button matTooltip="Edit">
+                <mat-icon>create</mat-icon>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br>
+</ng-container>
+
+<ng-template #playerStatTemplate>
+  <mat-toolbar>
+    <span>{{selectedPlayer?.name}}</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Event</th>
+          <!--          <th class="number">Actual</th>-->
+          <th class="number">Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let d of selectedPlayer?.stat">
+          <td>{{d.event}}</td>
+          <!--          <td class="number">{{d.actual}}</td>-->
+          <td class="number">{{d.points}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>

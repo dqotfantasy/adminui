@@ -1,0 +1,69 @@
+<mat-toolbar>
+  <mat-icon>view_agenda</mat-icon>&nbsp;
+  <span>Earning Details</span>
+  <span class="fill"></span>
+  <input [(ngModel)]="search" class="search-input" appDelayInput (delayedInput)="init()" placeholder="Search..."
+    type="search">&nbsp;
+    <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <button (click)="exportData()" [disabled]="data.length===0" mat-icon-button matTooltip="Export Data">
+      <mat-icon>file_download</mat-icon>
+    </button>
+</mat-toolbar>
+
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Match Name / Series Name</th>
+        <th>Date</th>
+        <th>Amount Collected (AC - 2%)</th>
+        <th>Amount Used</th>
+        <th>Winning Distribution (WD)</th>
+        <th>Total Earning [AC - (WD + Bonus)]</th>
+
+        <!--      <th>Is Active?</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data;let index=index">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td>{{d.name}}</td>
+        <td>{{d.last_squad_update}}</td>
+        <td>
+          <span *ngIf="convert(d.payment_data)">AC - {{ convert(d.payment_data).total_amount | number }}</span>
+          <span *ngIf="!convert(d.payment_data)">AC - 0</span>
+        </td>
+        <td>
+          <span *ngIf="convert(d.payment_data)">Bonus - {{ convert(d.payment_data).used_cash_bonus | number }}<br>
+          Winning - {{ convert(d.payment_data).total_amount | number }}<br>
+          Deposit - {{ convert(d.payment_data).used_deposited_balance | number }}</span>
+          <span *ngIf="!convert(d.payment_data)">Bonus - 0<br>
+            Winning - 0<br>
+            Deposit - 0</span>
+        </td>
+        <td>
+          <span *ngIf="convert(d.payment_data)">
+            {{ convert(d.payment_data).total_winning_distributed | number }}</span>
+          <span *ngIf="!convert(d.payment_data)">
+              0</span>
+        </td>
+        <td>
+          <span *ngIf="convert(d.payment_data)">
+            {{ earningTotal(d.payment_data) | number }}
+
+            <!-- {{ convert(d.payment_data).total_amount-convert(d.payment_data).used_cash_bonus-convert(d.payment_data).total_winning_distributed }} -->
+          </span>
+          <span *ngIf="!convert(d.payment_data)">
+            0</span>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+
+

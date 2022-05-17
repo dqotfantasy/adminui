@@ -1,0 +1,81 @@
+<mat-toolbar>
+  <mat-icon>emoji_events</mat-icon>&nbsp;
+  <span>Rank Categories</span>
+  <span class="fill"></span>
+  <button (click)="add()" mat-icon-button matTooltip="Add">
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th class="number">Winner</th>
+        <th class="left">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data;let index=index">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td>
+          {{d.name}}
+        </td>
+        <td class="number">{{d.winner}}</td>
+        <td class="left">
+
+          <button (click)="showPrizeBreakup(d)" mat-icon-button matTooltip="Prize breakup">
+            <mat-icon>emoji_events</mat-icon>
+          </button>
+
+          <button (click)="add(d)" mat-icon-button matTooltip="Copy">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+
+          <button (click)="edit(d)" mat-icon-button matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button>
+
+          <button (click)="remove(d)" mat-icon-button matTooltip="Remove">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>
+
+<ng-template #prizeBreakupTemplate>
+  <mat-toolbar>
+    <span>Prize Breakup</span>
+    <span class="fill"></span>
+    <button (click)="matDialog.closeAll()" mat-icon-button matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="table-scrollable">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th class="number">Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of prizeBreakups">
+          <td>
+            {{d.from}}
+            <ng-container *ngIf="d.from!==d.to">
+              - {{d.to}}
+            </ng-container>
+          </td>
+          <td class="number">{{d.percentage}}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</ng-template>

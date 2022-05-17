@@ -1,0 +1,33 @@
+.league_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 85%;
+  margin: 0 auto;
+  .league_inner{
+    font-weight: 600;
+    .img_cls{
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
+span.center_text {
+  display: flex;
+  justify-content: center;
+}
+span.suggestion_text {
+  display: flex;
+  justify-content: center;
+  margin-top: 13px;
+}
+span.error_text {
+  display: flex;
+  justify-content: center;
+  color: red;
+}
+span.submit_button {
+  width: 98% !important;
+  display: flex;
+  flex-direction: row-reverse;
+}

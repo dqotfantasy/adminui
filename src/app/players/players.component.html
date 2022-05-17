@@ -1,0 +1,46 @@
+<mat-toolbar>
+  <mat-icon>emoji_people</mat-icon>&nbsp;
+  <span>Players</span>
+  <span class="fill"></span>
+  <input (delayedInput)="init()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+    type="search">
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Position</th>
+        <th class="number">Credit</th>
+        <th class="number">Is Active?</th>
+        <th class="left">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td class="center" style="width: 40px">
+          <img [src]="d.image_path" alt="" style="width: 40px">
+        </td>
+        <td>{{d.name}}</td>
+        <td>{{d.position}}</td>
+        <td class="number">{{d.credit}}</td>
+        <td class="center">
+          <mat-chip-list>
+            <mat-chip [selectable]="false" [selected]="d.is_active">
+              {{d.is_active ? 'Yes' : 'No'}}
+            </mat-chip>
+          </mat-chip-list>
+        </td>
+        <td class="left">
+          <button (click)="edit(d)" [disabled]="d.contests_count>0" mat-icon-button matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

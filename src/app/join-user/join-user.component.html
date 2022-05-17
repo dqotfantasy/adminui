@@ -1,0 +1,57 @@
+<mat-toolbar>
+  <!-- <mat-icon>post_add</mat-icon>&nbsp; -->
+  <span>User Joined</span>
+  <span class="fill"></span>
+  <input (delayedInput)="init()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+  type="search">
+  <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <button (click)="exportData()" [disabled]="data.length===0" mat-icon-button matTooltip="Export Data">
+    <mat-icon>file_download</mat-icon>
+  </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Team Name</th>
+        <th>Rank</th>
+        <th>Contest Category</th>
+        <th>User type</th>
+        <th>Contest Detail</th>
+
+        <!-- <th>Pin</th> -->
+        <!-- <th>Status</th> -->
+        <!-- <th class="left">Action</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.username}}</td>
+        <td>{{d.name}}</td>
+        <td>{{d.rank}}</td>
+        <td>{{d.contest_category_name}}</td>
+
+        <td *ngIf="d.is_sys_user==0">Normal User</td>
+        <td *ngIf="d.is_sys_user==1">System User</td>
+        <td>Entry Fees: {{d.entry_fee}}
+          <br>
+          Winning: {{d.prize}}
+          <br>
+          Total Team: {{d.total_teams}}
+        </td>
+        <!-- <td>{{d.pin}}</td> -->
+        <!-- <td class="left">
+          <button (click)="remove(d)" mat-icon-button matTooltip="Delete">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td> -->
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

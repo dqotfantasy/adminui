@@ -1,0 +1,39 @@
+<mat-toolbar>
+  <!-- <mat-icon>post_add</mat-icon>&nbsp; -->
+  <span>Promoter Referral Info</span>
+  <span class="fill"></span>
+  <input (delayedInput)="init()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+  type="search">
+  <!-- <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button> -->
+</mat-toolbar>
+
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>User Referral Code</th>
+        <th>User Name</th>
+        <th>User Email</th>
+        <th>User Phone number</th>
+        <th>Promoter Referral Code</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.referral_code}}</td>
+        <td>{{d.ref_username}}</td>
+        <td>{{d.email}}</td>
+        <td>{{d.phone}}</td>
+        <td>{{convertjs(d.promoter_data)}}</td>
+        <td>{{d.created_at|date:'dd MMM hh:mm a'}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

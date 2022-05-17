@@ -1,0 +1,116 @@
+<ng-container *ngIf="data">
+
+  <div class="bg-white padding">
+    <div class="row text-center align-items-center">
+      <div class="col">
+        <img [src]="data.fixture.teama_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.fixture?.teama}}</h2>
+      </div>
+      <div class="col-auto">
+        <strong>VS</strong>
+      </div>
+      <div class="col">
+        <img [src]="data.fixture.teamb_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.fixture?.teamb}}</h2>
+      </div>
+    </div>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="Details">
+      <div class="container-fluid">
+        <div class="row details">
+          <div class="col-12 col-md-3">
+            <div class="font-500">Category</div>
+            <div *ngIf="data.category">{{data.category.name}}</div>
+            <div *ngIf="!data.category">Private Contest</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Total Teams</div>
+            <div>{{data.total_teams}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Joined Teams</div>
+            <div>{{data.joined_count}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Entry Fee</div>
+            <div>{{data.entry_fee}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Max Team</div>
+            <div>{{data.max_team}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Prize</div>
+            <div>{{data.prize}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Commission</div>
+            <div>{{data.commission}}%</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Confirmed</div>
+            <div>{{data.is_confirmed ? 'Yes' : 'No'}}</div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Prize breakup">
+      <div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th class="number">Prize</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of data.prize_breakup">
+              <td>
+                {{d.from}}
+                <ng-container *ngIf="d.from!==d.to">
+                  - {{d.to}}
+                </ng-container>
+              </td>
+              <td class="number">{{d.prize}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label="User Teams">
+      <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th class="number">Prize</th>
+              <th class="number">Points</th>
+              <th class="left">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of userTeams">
+              <td>{{d.rank}}</td>
+              <td>
+                {{d.username}}({{d.name}})
+              </td>
+              <td class="number">{{d.prize}}</td>
+              <td class="number">{{d.total_points}}</td>
+              <td class="left">
+                <button (click)="viewTeam($event,d)" mat-icon-button matTooltip="View Team">
+                  <mat-icon>preview</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;getUserTeams()" [length]="total"
+          [pageIndex]="page" [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <br>
+</ng-container>

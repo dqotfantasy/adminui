@@ -1,0 +1,42 @@
+<mat-toolbar>
+  <mat-icon>view_agenda</mat-icon>&nbsp;
+  <span>User Wallet</span>
+  <span class="fill"></span>
+  <input [(ngModel)]="search" class="search-input" appDelayInput (delayedInput)="setParams()" placeholder="Search..."
+    type="search">&nbsp;
+</mat-toolbar>
+
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Phone</th>
+        <th>Deposite Balance</th>
+        <th>Winning</th>
+        <th>Cash Bonus</th>
+
+        <!--      <th>Is Active?</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of data;let index=index">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.phone}}</td>
+        <td>{{user.deposited_balance}}<button *ngIf="adminrole==1" (click)="edit(user,'deposited_balance')" mat-icon-button matTooltip="Edit">
+          <mat-icon>create</mat-icon>
+        </button></td>
+        <td>{{user.winning_amount}}<button *ngIf="adminrole==1" (click)="edit(user,'winning_amount')" mat-icon-button matTooltip="Edit">
+          <mat-icon>create</mat-icon>
+        </button></td>
+        <td>{{user.cash_bonus}}<button *ngIf="adminrole==1" (click)="edit(user,'cash_bonus')" mat-icon-button matTooltip="Edit">
+          <mat-icon>create</mat-icon>
+        </button></td>
+
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;setParams()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+

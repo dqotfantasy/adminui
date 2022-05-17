@@ -1,0 +1,59 @@
+<ngx-loading-bar [fixed]="true" [includeSpinner]="false" color="#000000" ref="http"></ngx-loading-bar>
+<ngx-loading-bar [fixed]="true" [includeSpinner]="false" color="#000000" ref="router"></ngx-loading-bar>
+{{ message | async | json }}
+<div [class.is-mobile]="isMobile" class="main-container">
+  <mat-toolbar *ngIf="user?.id" class="toolbar" color="primary">
+    <button (click)="snav.toggle()" mat-icon-button matTooltip="Menu">
+      <mat-icon class="MenuIconClass">menu</mat-icon>
+    </button>
+    <!-- <h1 class="app-name" routerLink="/">{{title}}</h1> -->
+    <h1 class="app-name" routerLink="/"><img alt="logo" class="logo-image" src="assets/images/app_logo.png">
+    </h1>
+    <span class="fill"></span>
+    <button [matMenuTriggerFor]="menu" [matTooltip]="user?.name" mat-icon-button>
+      <mat-icon class="MenuIconClass">account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="changePassword()" mat-menu-item>Change Password</button>
+      <button (click)="logout()" mat-menu-item>Logout</button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container [style.marginTop.px]="isMobile && user?.id ? 56 : 0" class="sidenav-container">
+    <mat-sidenav #snav [autoFocus]="false" [fixedInViewport]="isMobile" [mode]="isMobile ? 'over' : 'side'"
+      [opened]="!isMobile && user?.id" fixedTopGap="56">
+      <mat-nav-list>
+        <div mat-subheader>Navigation</div>
+        <mat-accordion class="collapse-menu" displayMode="flat" multi>
+          <ng-container *ngFor="let m of sideLinks">
+            <mat-expansion-panel *ngIf="m.children.length>0" class="mat-elevation-z0" [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{m.name}}</mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-nav-list class="p-0">
+                <ng-container *ngFor="let nav of m.children">
+                  <a (click)="isMobile?snav.close():''" [queryParams]="nav?.query" [routerLink]="nav.url" mat-list-item
+                    routerLinkActive="active">
+                    <mat-icon *ngIf="nav.icon" matListIcon>{{nav.icon}}</mat-icon>
+                    {{nav.name}}
+                  </a>
+                </ng-container>
+              </mat-nav-list>
+            </mat-expansion-panel>
+            <a (click)="isMobile?snav.close():''" *ngIf="m.children.length===0" [queryParams]="m?.query"
+              [routerLink]="m.url" mat-list-item routerLinkActive="active">
+              <mat-icon *ngIf="m.icon" matListIcon>{{m.icon}}</mat-icon>
+              {{m.name}}
+            </a>
+          </ng-container>
+
+        </mat-accordion>
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

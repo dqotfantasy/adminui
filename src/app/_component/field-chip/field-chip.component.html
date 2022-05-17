@@ -1,0 +1,11 @@
+<mat-chip-list #chipList>
+  <mat-chip (removed)="remove(d)" *ngFor="let d of data" [removable]="removable" [selectable]="selectable">
+    {{d}}
+    <mat-icon *ngIf="removable" matChipRemove>cancel</mat-icon>
+  </mat-chip>
+  <input (matChipInputTokenEnd)="add($event)"
+         [matChipInputAddOnBlur]="addOnBlur"
+         [matChipInputFor]="chipList"
+         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+         [placeholder]="to.placeholder" appNumberOnly>
+</mat-chip-list>

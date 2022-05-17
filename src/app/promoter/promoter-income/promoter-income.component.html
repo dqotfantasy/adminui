@@ -1,0 +1,57 @@
+<mat-toolbar>
+  <!-- <mat-icon>post_add</mat-icon>&nbsp; -->
+  <span>Promoter Income Info</span>
+  <span class="fill"></span>
+  <!-- <input (delayedInput)="init()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+  type="search"> -->
+  <!-- <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button> -->
+</mat-toolbar>
+
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>Promoter Info</th>
+        <th>User Info</th>
+        <th>User Info</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.user.referral_code}}<br>
+            Phone - {{d.user.phone}}<br>
+            Email - {{d.user.email}}<br>
+            Promoter Type - <span *ngIf="d.user.promoter_type==0">User</span>
+                            <span *ngIf="d.user.promoter_type==1">Promoter</span>
+                            <span *ngIf="d.user.promoter_type==2">Master Promoter</span>
+        </td>
+        <td>
+          {{d.earn_user.referral_code}}<br>
+            Phone - {{d.earn_user.phone}}<br>
+            Email - {{d.earn_user.email}}<br>
+            Promoter Type - {{d.earn_user.promoter_type}}
+        </td>
+        <td>
+          Deposit Amount - {{d.deposited_amount}}<br>
+          Transaction ID - {{d.payment.transaction_id}}<br>
+          Transaction Date - {{d.payment.created_at | date:'dd MMM hh:mm a'}}
+        </td>
+        <td>
+          Amount - {{d.amount}}<br>
+          Level - {{d.referal_level}}<br>
+          Percentage(%) - {{d.payment.created_at | date:'dd MMM hh:mm a'}}<br>
+          Status - {{d.payment.status}}
+        </td>
+        <td>{{d.payment.created_at|date:'dd MMM hh:mm a'}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

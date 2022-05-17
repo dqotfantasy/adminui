@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <formly-form [fields]="fields" [form]="form" [model]="model" [options]="options"></formly-form>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button (click)="close()" [disabled]="!form.valid" color="primary" mat-button>Apply</button>
+  <button (click)="reset()" [disabled]="!form.valid" color="warn" mat-button>Reset</button>
+  <button [mat-dialog-close]="false" mat-button>Cancel</button>
+</mat-dialog-actions>

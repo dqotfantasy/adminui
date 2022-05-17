@@ -1,0 +1,160 @@
+<mat-toolbar>
+  <button (click)="backBtn()" mat-icon-button matTooltip="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<div *ngIf="user" class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="top mat-elevation-z1">
+        <!--        <img src="https://htmlstream.com/front-dashboard/assets/img/160x160/img6.jpg" alt="" class="mat-elevation-z2">-->
+        <div *ngIf="user.name" class="mat-elevation-z3">{{user.name[0]|uppercase}}</div>
+        <div *ngIf="!user.name" class="mat-elevation-z3"></div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="row text-center">
+    <div class="col">
+      <div class="user">
+        <h1>{{user.name}}</h1>
+        <p>{{user.email}}</p>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="mat-elevation-z1">
+
+    <mat-toolbar>
+      <span>Profile</span>
+      <span>(Friends : {{refrel_total}})</span>
+    </mat-toolbar>
+    <div class="padding bg-white">
+      <form (ngSubmit)="save()" [formGroup]="basicForm">
+        <formly-form [fields]="basicFields" [form]="basicForm" [model]="model" [options]="basicOptions"></formly-form>
+
+        <div class="text-right">
+          <button color="primary" mat-raised-button>Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <br>
+  <div *ngIf="bankAccount" class="mat-elevation-z1">
+
+    <mat-toolbar>
+      <span>Bank Account</span>
+      <span class="fill"></span>
+      <button *ngIf="adminrole==1" mat-icon-button (click)="bankSave()" matTooltip="Edit">
+        <mat-icon>create</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+      <table class="table sticky">
+        <thead>
+        <tr>
+          <th>Account Holder Name</th>
+          <th>Bank Name</th>
+          <th>Account Number</th>
+          <th>Branch</th>
+          <th>IFSC</th>
+          <th>Status</th>
+          <th>Message</th>
+          <th *ngIf="adminrole==1">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{bankAccount.name}}</td>
+          <td>{{bankAccount.bankName}}</td>
+          <td>{{bankAccount.account_number}}</td>
+          <td>{{bankAccount.branch}}</td>
+          <td>{{bankAccount.ifsc_code}}</td>
+          <td>{{bankAccount.status}}</td>
+          <td>{{bankAccount.message}}</td>
+          <button *ngIf="adminrole==1" mat-icon-button (click)="bankEdit()" matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="padding bg-white">
+      <div class="row">
+        <div class="col text-center">
+          <img [src]="bankAccount.image_path" alt="" style="width: 300px">
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div *ngIf="panCard" class="mat-elevation-z1">
+
+    <mat-toolbar>
+      <span>Pan Card</span>
+      <span class="fill"></span>
+      <button *ngIf="adminrole==1" mat-icon-button (click)="panSave()" matTooltip="Edit">
+        <mat-icon>create</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+      <table class="table sticky">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Pan Number</th>
+          <th>Date Of Birth</th>
+          <th>Status</th>
+          <th>Message</th>
+          <th *ngIf="adminrole==1">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{panCard.name}}</td>
+          <td>{{panCard.pan_number}}</td>
+          <td>{{panCard.date_of_birth}}</td>
+          <td>{{panCard.status}}</td>
+          <td>{{panCard.message}}</td>
+          <button *ngIf="adminrole==1" mat-icon-button (click)="panEdit()" matTooltip="Edit">
+            <mat-icon>create</mat-icon>
+          </button>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="padding bg-white">
+      <div class="row">
+        <div class="col text-center">
+          <img [src]="panCard.image_path" alt="" style="width: 300px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="mat-elevation-z1">
+    <app-payments [userId]="userId"></app-payments>
+  </div>
+  <br>
+  <div class="mat-elevation-z1">
+    <app-fixtures [userId]="userId"></app-fixtures>
+  </div>
+
+</div>
+<ng-template #imageTemplate>
+  <mat-toolbar>
+    <span>Preview</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <ngx-imageviewer [src]="imageSrc"></ngx-imageviewer>
+  </mat-dialog-content>
+</ng-template>

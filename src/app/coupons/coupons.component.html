@@ -1,0 +1,53 @@
+<mat-toolbar>
+  <mat-icon>redeem</mat-icon>&nbsp;
+  <span>Coupons</span>
+  <span class="fill"></span>
+  <button (click)="add()" mat-icon-button matTooltip="Add Coupon">
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Code</th>
+      <th class="text-right">Min Amount</th>
+      <th class="text-right">Max Cashback</th>
+      <th class="text-right">Cashback Percentage</th>
+      <th class="text-right">Usage Limit</th>
+      <th class="text-right">Limit per User</th>
+      <th>Expiry Date</th>
+      <th>Wallet Type</th>
+      <th>Is Active?</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let d of data;let index=index">
+      <td>{{(index + 1) + page * perPage}}</td>
+      <td>{{d.code}}</td>
+      <td class="text-right">{{d.min_amount}}</td>
+      <td class="text-right">{{d.max_cashback}}</td>
+      <td class="text-right">{{d.cashback_percentage}}%</td>
+      <td class="text-right">{{d.usage_limit}}</td>
+      <td class="text-right">{{d.limit_per_user}}</td>
+      <td>{{d.expire_at|date:'MMM dd, yyyy'}}</td>
+      <td>{{d.wallet_type}}</td>
+      <td>{{d.is_active ? 'Yes' : 'No'}}</td>
+      <td>
+        <button (click)="edit(d)" [disabled]="d.original_id" mat-icon-button matTooltip="Edit">
+          <mat-icon>create</mat-icon>
+        </button>
+        <button (click)="remove(d)" [disabled]="d.contests_count>0 || d.original_id" color="warn" mat-icon-button
+                matTooltip="Remove">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+                 [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

@@ -1,0 +1,21 @@
+.row {
+  align-items: center;
+
+  .icon-check_circle_outline {
+    color: #4CAF50;
+  }
+
+  .icon-highlight_off {
+    color: #f44336;
+  }
+
+  .col {
+    > div {
+      > h2 {
+        margin-bottom: 4px;
+      }
+
+      padding-left: 16px;
+    }
+  }
+}

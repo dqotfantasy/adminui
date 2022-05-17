@@ -1,0 +1,40 @@
+<mat-toolbar>
+  <mat-icon>post_add</mat-icon>&nbsp;
+  <span>System User Detail</span>
+  <span class="fill"></span>
+  <!-- <button (click)="add()" mat-icon-button matTooltip="Add">
+    <mat-icon>add</mat-icon>
+  </button> -->
+  <input type="file" id="finput" (change)="excelRead($event)">
+  <button (click)="exportData()" [disabled]="data.length===0" mat-icon-button matTooltip="Export Data">
+    <mat-icon>file_download</mat-icon>
+  </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+        <!-- <th>Pin</th> -->
+        <!-- <th>Status</th> -->
+        <!-- <th class="left">Action</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.username}}</td>
+        <td>{{d.email}}</td>
+        <!-- <td>{{d.pin}}</td> -->
+        <!-- <td class="left">
+          <button (click)="remove(d)" mat-icon-button matTooltip="Delete">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td> -->
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

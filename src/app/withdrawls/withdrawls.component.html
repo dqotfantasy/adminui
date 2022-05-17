@@ -1,0 +1,81 @@
+<mat-toolbar>
+  <mat-icon>payments</mat-icon>&nbsp;
+  <span>Withdraw</span>
+  <span class="fill"></span>
+  <input (delayedInput)="init()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+         type="search">
+  <button (click)="exportData()" [disabled]="data.length===0" mat-icon-button matTooltip="Export Data">
+    <mat-icon>file_download</mat-icon>
+  </button>
+  <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th *ngIf="!userId">User</th>
+      <th *ngIf="!userId">Phone</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th class="number">Amount</th>
+      <th>Created At</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let d of data;let index=index">
+      <td>{{(index + 1) + page * perPage}}</td>
+      <td *ngIf="!userId">
+        <div>{{d.name}}</div>
+        <small>{{d.email}}</small>
+      </td>
+      <td *ngIf="!userId">{{d.phone}}</td>
+      <td>{{d.description}}</td>
+      <td>{{d.type}}</td>
+      <td><span *ngIf="d.status=='PENDING'" style="color: red;">{{d.status}}</span><span *ngIf="d.status=='SUCCESS'" style="color: green;">{{d.status}}</span><span *ngIf="d.status!='SUCCESS' && d.status!='PENDING'">{{d.status}}</span></td>
+      <td class="number">{{d.amount}}</td>
+
+      <td>{{d.created_at|date:'medium'}}</td>
+      <td *ngIf="d.reference_id==null && d.status!='REJECTED'">
+        <!-- <button (click)="changeStatus(d)" *ngIf="d.status == 'PENDING' && d.type == 'WITHDRAW'"
+                mat-icon-button matTooltip="Status">
+          <mat-icon>create</mat-icon>
+        </button> -->
+        <button (click)="changeStatus(d,'send')"  mat-raised-button color="primary" matTooltip="Send">
+          Send
+        </button>&nbsp;
+        <button (click)="changeStatus(d,'cancel')"  mat-raised-button color="accent" matTooltip="Send">
+          Cancel
+        </button>
+      </td>
+      <td *ngIf="d.reference_id!=null">
+        {{d.status}}
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+                 [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>
+
+
+<ng-template #exportTemplate>
+  <mat-toolbar>
+    <span>Export Payment Data</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+
+    </div>
+  </mat-dialog-content>
+</ng-template>

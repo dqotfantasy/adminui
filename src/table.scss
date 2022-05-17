@@ -1,0 +1,101 @@
+@import "variable";
+
+$config: mat-typography-config();
+
+.table-scrollable {
+  overflow-x: auto;
+}
+
+@mixin table-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background: mat-color($background, 'card');
+
+    thead, tbody, tfoot {
+      background: inherit;
+    }
+
+    thead, tfoot {
+      tr {
+        height: 56px;
+      }
+    }
+
+    tbody {
+      tr {
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: mat-color($foreground, divider);
+        height: 52px;
+      }
+    }
+
+    &:not(.no-hover) {
+      tbody {
+        tr:not(.no-hover) {
+          &:hover {
+            background-color: mat-color($background, 'hover')
+          }
+        }
+      }
+    }
+
+    &.sticky {
+      th {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 2;
+      }
+    }
+
+    th {
+      color: mat-color($foreground, secondary-text);
+    }
+
+    td {
+      color: mat-color($foreground, text);
+    }
+
+    td, th {
+      text-align: left;
+      padding-left: 16px;
+      padding-right: 16px;
+      white-space: nowrap;
+
+      &.number {
+        text-align: right;
+      }
+
+      &.center {
+        text-align: center;
+
+        mat-chip {
+          margin: auto;
+        }
+      }
+    }
+  }
+}
+
+@mixin table-typography($config) {
+  .table {
+    font-family: mat-font-family($config);
+  }
+
+  th {
+    font-size: mat-font-size($config, caption);
+    font-weight: mat-font-weight($config, body-2);
+  }
+
+  td {
+    font-size: mat-font-size($config, body-1);
+  }
+}
+
+@include table-theme($app-theme);
+@include table-typography($config);

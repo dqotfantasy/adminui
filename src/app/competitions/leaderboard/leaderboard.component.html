@@ -1,0 +1,60 @@
+<mat-toolbar>
+  <mat-icon>people</mat-icon>&nbsp;
+  <span>Users</span>
+  <span class="fill"></span>
+  <input (delayedInput)="setParams()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+    type="search">
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>Phone</th>
+        <th>Total Point</th>
+        <th>Match Name</th>
+        <th>Contest Name</th>
+        <!-- <th>Contest Detail</th> -->
+        <th>Rank</th>
+        <th>View Details</th>
+        <!--      <th class="left">Action</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data;let index=index" class="pointer">
+        <td>{{(index + 1) + page * perPage}}</td>
+        <td>
+          <div>
+            {{d.name}}
+          </div>
+          <small>
+            {{d.email}}
+          </small>
+        </td>
+        <td>
+          {{d.phone}}
+        </td>
+        <td>{{d.total_point}}</td>
+        <td>{{d.fixture_name}}</td>
+        <td>{{d.category_name}}</td>
+        <!-- <td>Entry Fees: {{d.entry_fee}}
+          <br>
+          Winning: {{d.prize}}
+          <br>
+          Total Team: {{d.total_teams}}
+        </td> -->
+        <td>{{d.rank}}</td>
+        <td class="left">
+          <a [routerLink]="'/leaderboard-details/'+d.lId">
+            <button mat-icon-button matTooltip="View User Detail">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

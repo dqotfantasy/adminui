@@ -1,0 +1,41 @@
+:host {
+  .card {
+    height: 200px;
+    padding: 24px 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 16px;
+    text-align: center;
+    border-radius: 4px;
+    color: white;
+    border: dotted 2px transparent;
+    transition: all 0.4s ease-out;
+    cursor: pointer;
+
+    &.black {
+      color: black;
+    }
+
+    mat-icon {
+      margin-bottom: 38px;
+      font-size: 34px;
+    }
+
+    h1 {
+      transition: all 0.4s ease-out;
+      font-size: 32px;
+    }
+
+    &:hover {
+      border: dashed 2px black;
+
+      h1 {
+        transform: scale(0.9);
+      }
+    }
+  }
+  a{
+    text-decoration: none;
+  }
+}

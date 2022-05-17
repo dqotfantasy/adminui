@@ -1,0 +1,26 @@
+<mat-toolbar>
+  <mat-icon>public</mat-icon>&nbsp;
+  <span>States</span>
+  <span class="fill"></span>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th class="center">Is Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let d of data">
+      <td>
+        {{d.name}}
+      </td>
+      <td class="center">
+        <mat-slide-toggle (change)="update(d)" [(ngModel)]="d.is_active"
+                          [ngModelOptions]="{standalone:true}"></mat-slide-toggle>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

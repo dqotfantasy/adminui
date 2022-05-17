@@ -1,0 +1,51 @@
+@import "../../variable";
+:host {
+  display: flex;
+  height: 100%;
+  background: var(--primary);
+  //background-image: url("../../assets/images/login_bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .box {
+    background: white;
+    width: 300px;
+    margin: auto;
+    padding: 16px;
+    border-radius: 4px;
+    text-align: center;
+
+    img {
+      margin-bottom: 8px;
+      width: 100px;
+    //  background: var(--primary);
+    }
+  }
+  .theme-background-red{
+    background-color: red !important;
+  }
+  .theme-color-white{
+    color: white !important;
+  }
+
+  button {
+    width: 100%;
+    background-color: $primary;
+    color: #ffff;
+  }
+  //::ng-deep{
+  //  .mat-form-field-outline {
+  //    color: rgb(244, 244, 244) !important;
+  //  }
+  //  .mat-form-field-label {
+  //    color: rgba(255, 255, 255, 0.6) !important;
+  //  }
+  //
+  //  .mat-input-element{
+  //  color:white !important;
+  //  }
+  //}
+}
+
+
+

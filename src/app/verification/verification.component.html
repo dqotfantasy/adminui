@@ -1,0 +1,70 @@
+<mat-toolbar>
+  <mat-icon>verified</mat-icon>&nbsp;
+  <span>Verification</span>
+  <span class="fill"></span>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>User</th>
+      <th>Phone</th>
+      <th>Bank Verified?</th>
+      <th>PAN Verified?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let d of data;let index=index" [routerLink]="'/users/profile/'+d.id" class="pointer">
+      <td>{{(index + 1) + page * perPage}}</td>
+      <td>
+        <div>
+          {{d.name}}
+          <mat-icon *ngIf="d.is_locked" class="custom" color="warn" matTooltip="Locked">lock</mat-icon>
+        </div>
+        <small>
+          {{d.email}}
+          <mat-icon *ngIf="d.email_verified" [matTooltip]="d.email_verified?'Verified':'Not Verified'" class="custom"
+                    color="primary">verified
+          </mat-icon>
+        </small>
+      </td>
+      <td>
+        {{d.phone}}
+        <mat-icon [color]="d.phone_verified?'primary':'warn'"
+                  [matTooltip]="d.phone_verified?'Verified':'Not Verified'" class="custom" color="primary">
+          verified
+        </mat-icon>
+      </td>
+      <td>
+        <ng-container *ngIf="d.bank">
+          {{d.bank.status}}
+          <mat-icon [color]="d.bank.status=='VERIFIED'?'primary':'warn'"
+                    [matTooltip]="d.bank.status == 'VERIFIED'?'Verified':'Not Verified'" class="custom" color="primary">
+            verified
+          </mat-icon>
+        </ng-container>
+        <ng-container *ngIf="d.bank == null">
+          <span class="text-danger">Document Not Uploaded</span>
+        </ng-container>
+      </td>
+
+      <td>
+        <ng-container *ngIf="d.pan">
+          {{d.pan.status}}
+          <mat-icon [color]="d.pan.status=='VERIFIED'?'primary':'warn'"
+                    [matTooltip]="d.pan.status == 'VERIFIED'?'Verified':'Not Verified'" class="custom" color="primary">
+            verified
+          </mat-icon>
+        </ng-container>
+        <ng-container *ngIf="d.pan == null">
+          <span class="text-danger">Document Not Uploaded</span>
+        </ng-container>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;setParams()"
+                 [length]="total" [pageIndex]="page"
+                 [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

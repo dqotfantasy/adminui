@@ -1,0 +1,45 @@
+<mat-toolbar>
+  <!-- <mat-icon>post_add</mat-icon>&nbsp; -->
+  <span>Referal User Detail</span>
+  <span class="fill"></span>
+  <input (delayedInput)="init()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+  type="search">
+  <button (click)="exportData()" [disabled]="data.length===0" mat-icon-button matTooltip="Export Data">
+    <mat-icon>file_download</mat-icon>
+  </button>
+  <!-- <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button> -->
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Referal User</th>
+        <th>Referal By</th>
+        <!-- <th>Pin</th> -->
+        <!-- <th>Status</th> -->
+        <!-- <th class="left">Action</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.email}}</td>
+        <td>{{d.phone}}</td>
+        <td>{{d.username}}</td>
+        <td>{{d.ref_username}}</td>
+        <!-- <td>{{d.pin}}</td> -->
+        <!-- <td class="left">
+          <button (click)="remove(d)" mat-icon-button matTooltip="Delete">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td> -->
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

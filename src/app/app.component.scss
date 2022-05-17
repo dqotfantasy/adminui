@@ -1,0 +1,91 @@
+@import "../variable";
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.is-mobile .toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+  
+}
+.toolbar {
+  background-color: $primary;
+}
+.MenuIconClass{
+  color: #ffff ;
+}
+
+h1.app-name {
+  margin-left: 8px;
+  cursor: pointer;
+  outline: none;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+
+  .mat-sidenav {
+    min-width: 250px;
+
+    .mat-list-item.active {
+      background-color: rgba($primary, 0.1);
+      color: $primary;
+    }
+  }
+}
+
+.menu-button.rotated {
+  transform: rotate(180deg);
+}
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.logo-image {
+  width: 110px;
+  padding-top: 10px;
+}
+
+.collapse-menu {
+  .mat-expansion-panel-header {
+    padding: 0 16px;
+    height: 48px;
+
+    &.mat-expanded {
+      ::ng-deep.mat-expansion-indicator {
+        margin-top: 8px;
+      }
+    }
+
+    ::ng-deep.mat-expansion-indicator {
+      margin-top: -4px;
+    }
+
+    .mat-expansion-panel-header-title {
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  ::ng-deep.mat-expansion-panel-body {
+    padding: 0;
+
+    .mat-list-item {
+      padding-left: 16px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<mat-dialog-content class="mat-typography">
+  <form #f (ngSubmit)="save()" [formGroup]="form">
+    <formly-form [fields]="fields" [form]="form" [model]="model" [options]="options"></formly-form>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button (click)="save()" [disabled]="!form.valid || dataService.isLoading" color="primary" mat-raised-button>
+    {{saveButton}}
+  </button>
+  <button (click)="f.reset()" [mat-dialog-close]="false" mat-button>Cancel</button>
+</mat-dialog-actions>

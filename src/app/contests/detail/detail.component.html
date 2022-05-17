@@ -1,0 +1,214 @@
+<mat-toolbar>
+  <button (click)="backBtn()" mat-icon-button matTooltip="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<ng-container *ngIf="data">
+
+  <div class="bg-white padding">
+    <div class="row text-center align-items-center">
+      <div class="col">
+        <img [src]="data.fixture.teama_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.fixture?.teama_short_name}}</h2>
+      </div>
+      <div class="col-auto">
+        <mat-chip-list>
+          <mat-chip [selectable]="false" [selected]="true">{{data.status}}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="col">
+        <img [src]="data.fixture.teamb_image" alt="" class="team-image">
+        <h2 class="m-0">{{data.fixture?.teamb_short_name}}</h2>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col text-center">
+        {{data.status_note}}
+      </div>
+    </div>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="Details">
+      <div class="container-fluid">
+        <div class="row details">
+          <div class="col-12 col-md-3">
+            <div class="font-500">Category</div>
+            <div>{{data.category.name}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Total Teams</div>
+            <div>{{data.total_teams}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Joined Teams</div>
+            <div>{{data.joined_count}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Entry Fee</div>
+            <div>{{data.entry_fee}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Max Team</div>
+            <div>{{data.max_team}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Prize</div>
+            <div>{{data.prize}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Commission</div>
+            <div>{{data.commission}}%</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Type</div>
+            <div>{{data.type}}</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Discount</div>
+            <div>{{data.discount}}%</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Bonus</div>
+            <div>{{data.bonus}}%</div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="font-500">Is Confirmed?</div>
+            <div>{{data.is_confirmed ? 'Yes' : 'No'}}</div>
+          </div>
+
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Prize Breakup">
+      <div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th class="number">Prize</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of data.prize_breakup">
+              <td>
+                {{d.from}}
+                <ng-container *ngIf="d.from!==d.to">
+                  - {{d.to}}
+                </ng-container>
+              </td>
+              <td class="number">{{d.prize}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label="Dynamic Prize Breakup">
+      <div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th class="number">Prize</th>
+              <th class="number">Total Prize</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of data.new_prize_breakup">
+              <td>
+                {{d.from}}
+                <ng-container *ngIf="d.from!==d.to">
+                  - {{d.to}}
+                </ng-container>
+              </td>
+              <td class="number">{{d.prize}}</td>
+              <td class="number">{{calculatePrize(d)}}</td>
+            </tr>
+            <tr *ngIf="data.new_prize_breakup">
+              <td><b>Total</b></td>
+              <td></td>
+              <td class="number"><b>{{globaltotal}}</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label="User Teams">
+      <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+        <input (delayedInput)="getUserTeams()" [(ngModel)]="search" appDelayInput class="search-input" placeholder="Search..."
+    type="search">
+        <table class="table sticky">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Rank</th>
+              <th>Name</th>
+              <th class="number">Prize</th>
+              <th class="number">Points</th>
+              <th class="left">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of userTeams;let index=index">
+              <td>{{(index + 1) + page * perPage}}</td>
+              <td>{{d.rank}}</td>
+              <td>
+                {{d.username}}({{d.name}})
+              </td>
+              <td class="number">{{d.prize}}</td>
+              <td class="number">{{d.total_points}}</td>
+              <td class="left">
+                <button (click)="viewTeam($event,d)" mat-icon-button matTooltip="View Team">
+                  <mat-icon>preview</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;getUserTeams()" [length]="total"
+          [pageIndex]="page" [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <br>
+</ng-container>
+
+<ng-template #teamViewTemplate>
+  <mat-toolbar>
+    <span>Team Preview</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Role</th>
+            <th class="number">Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of teamData?.players">
+            <td>
+              <img src="{{d.image}}" width="50px" alt="">
+              <span matBadge="C" matBadgeOverlap="false" *ngIf="d.id == teamData.captain_id">{{d.name}}</span>
+              <span matBadge="VC" matBadgeOverlap="false" *ngIf="d.id == teamData.vice_captain_id">{{d.name}}</span>
+              <span matBadge="M" matBadgeOverlap="false" *ngIf="d.id == teamData.master_player_id">{{d.name}}</span>
+              <span *ngIf="d.id !== teamData.captain_id && d.id !== teamData.vice_captain_id">{{d.name}}</span>
+            </td>
+            <td>
+              {{d.role}}
+            </td>
+            <td class="text-right">
+              {{d.total_points}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>

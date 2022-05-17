@@ -1,0 +1,159 @@
+<mat-toolbar>
+  <mat-icon>settings</mat-icon>&nbsp;
+  <span>Settings</span>
+</mat-toolbar>
+<div class="padding">
+  <mat-accordion>
+
+    <!-- <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Team
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="teamForm">
+        <formly-form [fields]="teamFields" [form]="teamForm" [model]="teamModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('teams')" [disabled]="!teamForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel> -->
+
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Withdraw
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="withdrawForm">
+        <formly-form [fields]="withdrawFields" [form]="withdrawForm" [model]="withdrawModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('withdraw')" [disabled]="!withdrawForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Entity Sport
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="entityForm">
+        <formly-form [fields]="entityFields" [form]="entityForm" [model]="entityModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('entity_sport')" [disabled]="!entityForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Razorpay
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="razorpayForm">
+        <formly-form [fields]="razorpayFields" [form]="razorpayForm" [model]="razorpayModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('razorpay')" [disabled]="!razorpayForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Level Limit Contests
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="lvlForm">
+        <formly-form [fields]="lvlFields" [form]="lvlForm" [model]="lvlModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('level_limit')" [disabled]="!lvlForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          TDS Deduction %
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="tdsForm">
+        <formly-form [fields]="tdsFields" [form]="tdsForm" [model]="tdsModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('tds_deduction')" [disabled]="!tdsForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Private Contest
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="PCSForm">
+        <formly-form [fields]="PCSFields" [form]="PCSForm" [model]="PCSModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('private_contest')" [disabled]="!PCSForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Version
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="versionForm">
+        <formly-form [fields]="versionFields" [form]="versionForm" [model]="versionModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('version')" [disabled]="!versionForm.valid" color="primary" mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Referral Bonus
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="referralForm">
+        <formly-form [fields]="referralFields" [form]="referralForm" [model]="referralModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('referral_price')" [disabled]="!referralForm.valid" color="primary"
+                  mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Signup Bonus
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="signupbonusForm">
+        <formly-form [fields]="signupbonusFields" [form]="signupbonusForm" [model]="signupbonusModel"></formly-form>
+        <div class="text-right">
+          <button (click)="save('signup_bonus')" [disabled]="!signupbonusForm.valid" color="primary"
+                  mat-raised-button>Save
+          </button>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

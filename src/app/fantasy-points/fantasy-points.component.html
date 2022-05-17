@@ -1,0 +1,33 @@
+<mat-toolbar>
+  <mat-icon>star</mat-icon>&nbsp;
+  <span>Fantsay Points</span>
+  <span class="fill"></span>
+</mat-toolbar>
+<nav mat-tab-nav-bar>
+  <a (click)="tab = t" *ngFor="let t of types" [active]="tab == t" mat-tab-link> {{t}} </a>
+</nav>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Point</th>
+        <!--      <th class="left">Action</th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data|filterBy:['type']:tab">
+        <td>{{d.name}}</td>
+        <td>{{d.category}}</td>
+        <td>{{d.point}}{{d.postfix}}</td>
+        <!--      <td class="left">-->
+        <!--        <button (click)="edit(d)" mat-icon-button matTooltip="Edit">-->
+        <!--          <mat-icon>create</mat-icon>-->
+        <!--        </button>-->
+        <!--      </td>-->
+      </tr>
+
+    </tbody>
+  </table>
+</div>

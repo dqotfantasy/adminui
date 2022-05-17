@@ -1,0 +1,97 @@
+<mat-toolbar>
+  <mat-icon>playlist_add_check</mat-icon>&nbsp;
+  <span>Private Contests</span>
+  <span class="fill"></span>
+  <button (click)="openFilter()" mat-icon-button matTooltip="Filter">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+    <tr>
+      <th>User</th>
+      <th *ngIf="!fixtureId">Fixture</th>
+      <th class="number">Total Teams</th>
+      <th class="center">Confirmed</th>
+      <th class="number">Max Team</th>
+      <th class="number">Entry Fee</th>
+      <th class="number">Prize</th>
+      <th class="center">Status</th>
+      <th class="left">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let d of data">
+      <td>
+        <a [routerLink]="'/users/profile/'+d.user_id" *ngIf="d.user">{{d.user}}</a>
+      </td>
+      <td *ngIf="!fixtureId"><a [routerLink]="'/fixtures/fixture-detail/'+d.fixture_id"
+                                *ngIf="d.fixture_id">{{d.fixture}}</a>
+      </td>
+      <td class="number">{{d.joined}}/{{d.total_teams}}</td>
+
+      <td class="center">
+        <mat-chip-list>
+          <mat-chip [selectable]="false" [selected]="d.is_confirmed">
+            {{d.is_confirmed ? 'Yes' : 'No'}}
+          </mat-chip>
+        </mat-chip-list>
+      </td>
+      <td class="number">{{d.max_team}}</td>
+      <td class="number">{{d.entry_fee}}</td>
+      <td class="number">{{d.prize}}</td>
+      <td class="center">
+        <mat-chip-list>
+          <mat-chip [selectable]="false" [selected]="false">
+            {{d.status}}
+          </mat-chip>
+        </mat-chip-list>
+      </td>
+      <td class="left">
+        <button (click)="showPrizeBreakup($event,d)" mat-icon-button matTooltip="Prize breakup">
+          <mat-icon>emoji_events</mat-icon>
+        </button>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<ng-template #prizeBreakupTemplate>
+  <mat-toolbar>
+    <span>Prize Breakup</span>
+    <span class="fill"></span>
+    <button mat-icon-button matDialogClose matTooltip="Close" tabindex="0">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-dialog-content class="mat-typography">
+    <div class="table-scrollable">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Rank</th>
+          <th class="number">Percentage</th>
+          <th class="number">Prize</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let d of prizeBreakups">
+          <td>
+            {{d.from}}
+            <ng-container *ngIf="d.from!==d.to">
+              - {{d.to}}
+            </ng-container>
+          </td>
+          <td class="number">{{d.percentage}}%</td>
+          <td class="number">{{d.prize}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+</ng-template>

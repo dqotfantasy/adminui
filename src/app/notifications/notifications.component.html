@@ -1,0 +1,56 @@
+<mat-toolbar>
+    <mat-icon>send</mat-icon>&nbsp;
+    <span>Notifications</span>
+    <span class="fill"></span>
+    <button (click)="add()" mat-icon-button matTooltip="Add" [disabled]="type.lengh>0">
+        <mat-icon>add</mat-icon>
+    </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Image</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of data;let index=index" class="pointer">
+                <td>{{(index + 1) + page * perPage}}</td>
+                <td>
+                    <div>
+                        {{d.type}}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <img src="{{d.image}}" width="100px">
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        {{d.subject}}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        {{d.message}}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        {{d.created_at|date:'medium'}}
+                    </div>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+    <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+        [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>

@@ -1,0 +1,151 @@
+<mat-toolbar>
+  <mat-icon>class</mat-icon>&nbsp;
+  <span>Cron Jobs</span>
+  <div class="fill"></div>
+  <input [(ngModel)]="search" class="search-input" appDelayInput (delayedInput)="init()" placeholder="Search..."
+    type="search">&nbsp;
+  <button (click)="cronCheck()" mat-raised-button color="warn">
+    Add cron
+  </button>
+</mat-toolbar>
+<span class="center_text"><h2>({{fixtureName}})</h2></span>
+
+<ng-container *ngIf="availableData">
+  <mat-tab-group>
+  <mat-tab label="Upcoming Cron">
+    <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+      <table class="table sticky">
+        <thead>
+          <tr>
+            <!-- <th>#</th> -->
+            <th>Queue</th>
+            <!-- <th >Payload</th> -->
+            <th >Avalable At</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of availableData">
+            <td >{{d.queue}}</td>
+            <!-- <td class="number" >{{d.payload}}</td> -->
+            <td >{{ d.available_at*1000 | date:'medium' }}</td>
+            <button (click)="remove(d,'job')" mat-icon-button matTooltip="Remove">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="availabletotal"
+        [pageIndex]="availablepage" [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="availableperPage"></mat-paginator>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Failed Jobs">
+    <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+      <table class="table sticky">
+        <thead>
+          <tr>
+            <!-- <th>#</th> -->
+            <th>Queue</th>
+            <th>Failed At</th>
+            <th>Exception</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of failedData">
+
+            <td>{{d.queue}}</td>
+            <td>{{d.failed_at}}</td>
+            <td>
+              <button (click)="errorShow(d.exception)" mat-raised-button color="warn">
+                view
+              </button>
+            </td>
+            <button (click)="remove(d,'failjob')" mat-icon-button matTooltip="Remove">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+          </tr>
+        </tbody>
+      </table>
+      <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="failedtotal"
+        [pageIndex]="failedpage" [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="failedperPage"></mat-paginator>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Entity Sport">
+    <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+      <table class="table sticky">
+        <tbody>
+          <tr>
+            <td>
+              <!-- <a [attr.href]="createUrl('matches/'+fixtureId+'/squads')" target="_blank"> -->
+                <a [attr.href]="'https://rest.entitysport.com/v2/matches/'+fixtureId+'/squads?token='+token" target="_blank">
+              Lineup
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <!-- <a [attr.href]="createUrl('matches/'+fixtureId+'/scorecard')" target="_blank"> -->
+                <a [attr.href]="'https://rest.entitysport.com/v2/matches/'+fixtureId+'/scorecard?token='+token" target="_blank">
+
+                Scorecard
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <!-- <a [attr.href]="createUrl('matches/'+fixtureId+'/newpoint')" target="_blank"> -->
+                <a [attr.href]="'https://rest.entitysport.com/v2/matches/'+fixtureId+'/newpoint?token='+token" target="_blank">
+                FantasyPoints
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <!-- <a [attr.href]="createUrl('competitions/'+competition_id+'/squads/' + fixtureId)" target="_blank"> -->
+              <a [attr.href]="'https://rest.entitysport.com/v2/competitions/'+competition_id+'/squads/'+fixtureId+'?token='+token" target="_blank">
+
+              Squads
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="availabletotal"
+        [pageIndex]="availablepage" [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="availableperPage"></mat-paginator>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Redis Data">
+    <div #tt1 [style.maxHeight]="dataService.getHeight(tt1)" class="table-scrollable">
+      <table class="table sticky">
+        <thead>
+          <tr>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of redisData">
+            <td>{{ d | json }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-tab>
+
+</mat-tab-group>
+</ng-container>
+
+<div class="overlay" *ngIf="popup">
+  <div class="popup">
+      <h2>Error Description</h2>
+      <a class="close" (click)="popup = false">&times;</a>
+      <div class="content">
+      {{ermsg}}
+      </div>
+  </div>
+</div>
+

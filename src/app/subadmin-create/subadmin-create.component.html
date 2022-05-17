@@ -1,0 +1,41 @@
+<mat-toolbar>
+  <mat-icon>post_add</mat-icon>&nbsp;
+  <span>SubAdmin Detail</span>
+  <span class="fill"></span>
+  <button *ngIf="admin" (click)="add()" mat-icon-button matTooltip="Add">
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-toolbar>
+<div #tt [style.maxHeight]="dataService.getHeight(tt)" class="table-scrollable">
+  <table class="table sticky">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Pin</th>
+        <th>Role</th>
+        <th *ngIf="admin">Delete</th>
+        <!-- <th>Pin</th> -->
+        <!-- <th>Status</th> -->
+        <!-- <th class="left">Action</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of data">
+        <td>{{d.name}}</td>
+        <td>{{d.email}}</td>
+        <td>{{d.pin}}</td>
+        <td *ngIf="d.role_id==1">Admin</td>
+        <td *ngIf="d.role_id==2">SubAdmin</td>
+        <td class="left" *ngIf="admin">
+          <button (click)="remove(d)" mat-icon-button matTooltip="Delete">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <mat-paginator (page)="page=$event.pageIndex;perPage=$event.pageSize;init()" [length]="total" [pageIndex]="page"
+    [pageSizeOptions]="[15, 25, 50, 100]" [pageSize]="perPage"></mat-paginator>
+</div>
